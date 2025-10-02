@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haniya's Secret Birthday Portal</title>
-    <!-- Using Inter for a more modern, yet elegant feel -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* * --- GLOBAL BODY STYLES (Used Tailwind approach via custom CSS for elegance) --- */
@@ -104,18 +103,24 @@
             transform: translateY(0);
         }
         
-        /* Style for the poem button */
-        #generate-poem-btn {
+        /* Style for the surprise button */
+        #surprise-btn {
             background-color: #c99e69; /* Lighter, contrasting gold color */
             color: #1e000f;
             font-size: 1.1em;
+            animation: pulse 2s infinite; /* Keep the pulse for excitement */
         }
-        #generate-poem-btn:hover:not(:disabled) {
+        #surprise-btn:hover:not(:disabled) {
             background-color: #b3885b;
         }
-        #generate-poem-btn:disabled {
+        #surprise-btn:disabled {
             background-color: #999;
             cursor: wait;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(201, 158, 105, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(201, 158, 105, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(201, 158, 105, 0); }
         }
 
         #error-message {
@@ -280,7 +285,6 @@
                 I wish you the happiest birthday filled with joy and laughter. I love you more than words can say.
             </p>
 
-            <!-- ROSE FLOWER INTERACTION SECTION -->
             <div class="rose-container">
                 <div class="rose-head" onclick="revealQuality()">
                     <div class="petal-layer"></div>
@@ -294,29 +298,27 @@
                 </div>
                 <div class="rose-stem"></div>
             </div>
-            <!-- END ROSE FLOWER SECTION -->
-            
             <p style="font-size: 1.2em; line-height: 1.6; margin-top: 30px;">
                 Here are my favorite pics from this year:
             </p>
 
             <div class="photo-grid">
-                <!-- Using aesthetic placeholders as the original image URLs are likely local or non-public -->
-                <img src="" alt="Memory 1" onerror="this.onerror=null;this.src='https://placehold.co/150x200/A3415E/ffffff?text=Our%20Adventures'">
-                <img src="" alt="Memory 2" onerror="this.onerror=null;this.src='https://placehold.co/150x200/C99E69/ffffff?text=Your%20Smile'">
-                <img src="" alt="Memory 3" onerror="this.onerror=null;this.src='https://placehold.co/150x200/F2709C/1e000f?text=Sweet%20Memories'">
-                <img src="" alt="Memory 4" onerror="this.onerror=null;this.src='https://placehold.co/150x200/E94057/ffffff?text=You%20&%20Me'">
+                <img src="img/rida1.jpg.jpg" alt="Memory 1" onerror="this.onerror=null;this.src='https://placehold.co/150x200/A3415E/ffffff?text=Our%20Adventures'">
+                <img src="img/rida2.jpg.jpg" alt="Memory 2" onerror="this.onerror=null;this.src='https://placehold.co/150x200/C99E69/ffffff?text=Your%20Smile'">
+                <img src="img/rida3.jpg.jpg" alt="Memory 3" onerror="this.onerror=null;this.src='https://placehold.co/150x200/F2709C/1e000f?text=Sweet%20Memories'">
+                <img src="img/rida4.jpg.jpg" alt="Memory 4" onerror="this.onerror=null;this.src='https://placehold.co/150x200/E94057/ffffff?text=You%20&%20Me'">
             </div>
             
-            <!-- POEM GENERATOR SECTION (Restored to local cycling) -->
             <div style="margin-top: 40px; border-top: 2px dashed #a3415e; padding-top: 20px;">
                 <h2 style="color: #ffccff; font-size: 1.4em; margin-bottom: 20px;">A Little Extra Magic, Just for You</h2>
                 
-                <button id="generate-poem-btn" onclick="generateBirthdayPoem()">
-                    ✨ Generate Poem ✨
+                <audio id="voice-note" src="aayan_love_note.mp3.m4a" preload="auto"></audio>
+
+                <button id="surprise-btn" onclick="handleSurpriseButton()">
+                    ✨ Get Your Surprise Message or Poem ✨
                 </button>
                 <div id="poem-output" style="margin-top: 20px; padding: 20px; background-color: rgba(0, 0, 0, 0.4); border-radius: 10px; color: #ffccff; text-align: center; white-space: pre-wrap; font-style: italic; line-height: 1.5;">
-                    Click the button above to read a heartfelt poem written just for you!
+                    Click the button to hear a special message first, then tap again for a poem!
                 </div>
             </div>
 
@@ -333,25 +335,20 @@
         const CORRECT_USERNAME = "haniyarida"; 
         const CORRECT_PASSWORD = "05072021"; 
 
-        // --- LOCAL POEM DATA (UPDATED to hold all 5 original poems) ---
+        // --- LOCAL POEM DATA ---
         const BIRTHDAY_POEMS = [
-            // Poem 1
             "My dearest Haniya, on this day so bright,\nWith every year, you fill my world with light.\nYour love's the anchor, keeping my heart warm and true,\nMay all your deepest wishes beautifully come true.",
-            
-            // Poem 2
             "My dearest Haniya, on this special day,\nYou light my world in every lovely way.\nWith every moment, our shared journey's clear,\nHappy birthday, my love, forever near.",
-            
-            // Poem 3
             "My dearest Haniya, on your special day,\nYou light my world in every lovely way.\nEach moment shared, a treasure I embrace,\nForever grateful for your love and grace.",
-            
-            // Poem 4
             "My dearest Haniya, on your special day,\nYou light up my world in every sweet way.\nWith you by my side, life's a beautiful art,\nHappy birthday, my love, you own all of my heart.",
-            
-            // Poem 5
             "My sweet Haniya, as your birthday gleams,\nYou fill my world with the most beautiful dreams.\nEach shared moment, a treasure so true,\nMy path is brighter, simply with you.\nHappy birthday, my love, forever I'll adore you."
         ];
-        // The index will now cycle through all five elements.
         let currentPoemIndex = 0;
+
+        // --- DUAL SURPRISE LOGIC STATE ---
+        let contentMode = 'audio'; // Starts with playing audio first
+        let isAudioPlaying = false;
+
 
         // --- APPLICATION LOGIC ---
 
@@ -370,8 +367,8 @@
                 
                 document.body.classList.add('surprise-bg-active');
                 
-                // Show the initial poem right away
-                generateBirthdayPoem();
+                // Set the initial message
+                document.getElementById('poem-output').textContent = "Click the button to hear a special message first, then tap again for a poem!";
                 
             } else {
                 // FAILURE: Show error message
@@ -379,9 +376,61 @@
             }
         }
 
-        function generateBirthdayPoem() {
+        /**
+         * Handles both playing the audio (first click) and cycling the poems (subsequent clicks).
+         */
+        function handleSurpriseButton() {
+            if (contentMode === 'audio') {
+                playVoiceNote();
+                contentMode = 'poem'; // Set next click to be the poem
+            } else {
+                cycleBirthdayPoem();
+            }
+        }
+
+        function playVoiceNote() {
+            const audio = document.getElementById('voice-note');
+            const button = document.getElementById('surprise-btn');
             const outputDiv = document.getElementById('poem-output');
-            const button = document.getElementById('generate-poem-btn');
+
+            if (audio.error) {
+                 outputDiv.innerHTML = '🚨 **ERROR:** Could not load the voice note file. Please ensure **`your_voice_note.mp3`** is in the same folder!';
+                return;
+            }
+
+            if (isAudioPlaying) {
+                // Stop and reset audio
+                audio.pause();
+                audio.currentTime = 0;
+                isAudioPlaying = false;
+                button.textContent = '🎙️ Replay Birthday Message (or tap again for a Poem!)';
+                outputDiv.innerHTML = 'Playback stopped. Click the button to replay or hear the first poem.';
+            } else {
+                // Start playing
+                audio.play()
+                    .then(() => {
+                        isAudioPlaying = true;
+                        button.textContent = '🔊 Playing Audio... (Click to Stop)';
+                        outputDiv.innerHTML = 'Listen closely! I recorded this message just for you. 🥰';
+                    })
+                    .catch(error => {
+                        // This catch block handles Autoplay restrictions common in browsers
+                        outputDiv.innerHTML = 'Error playing audio: The browser might require a user interaction first. Try clicking again!';
+                        console.error('Audio playback failed:', error);
+                    });
+            }
+
+            // Reset state when audio finishes naturally
+            audio.onended = function() {
+                isAudioPlaying = false;
+                button.textContent = '✨ Message Complete! Tap for a Poem ✨';
+                outputDiv.innerHTML = 'That was the message! Now, click again for your first birthday poem. ❤️';
+            };
+        }
+
+        function cycleBirthdayPoem() {
+            const outputDiv = document.getElementById('poem-output');
+            const button = document.getElementById('surprise-btn');
 
             // 1. Get the current poem
             const poem = BIRTHDAY_POEMS[currentPoemIndex];
@@ -393,7 +442,11 @@
             currentPoemIndex = (currentPoemIndex + 1) % BIRTHDAY_POEMS.length;
             
             // 4. Update button text
-            button.textContent = '✨ Read the Next Poem ✨';
+            if (currentPoemIndex === 0) {
+                 button.textContent = '💖 Read the First Poem Again 💖';
+            } else {
+                button.textContent = '✨ Read the Next Poem ✨';
+            }
         }
 
 
@@ -440,8 +493,8 @@
 
         // --- Initial Setup ---
         window.onload = function() {
-            // Set initial placeholder message for the poem section
-            document.getElementById('poem-output').textContent = "Click the button above to read a heartfelt poem written just for you!";
+            // Set initial placeholder message for the poem/voice section
+            document.getElementById('poem-output').textContent = "Click the button to hear a special message first, then tap again for a poem!";
         };
     </script>
 </body>

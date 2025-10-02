@@ -1,5 +1,5 @@
 // 1. DEFINE YOUR SPECIAL DATES HERE
-const birthdayDate = new Date("2025-10-02T00:00:00").getTime();
+const birthdayDate = new Date("2025-10-03T00:00:00").getTime();
 const anniversaryDate = new Date("2021-07-05T18:30:00").getTime();
 
 // Define the name of the surprise file
@@ -125,5 +125,6 @@ birthdayCard.addEventListener('click', function() {
 // Anniversary card just fires confetti for fun
 
 anniversaryCard.addEventListener('click', fireConfetti);
+
 
 

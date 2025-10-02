@@ -1,0 +1,160 @@
+/* ---------------------------------- */
+/* CUSTOM FONT AND BASE STYLES   */
+/* ---------------------------------- */
+body {
+    /* Use the elegant font we linked in the HTML */
+    font-family: 'Playfair Display', serif;
+    background-color: #f7f3f0; /* Soft off-white background */
+    color: #4c3f47; /* Deep, muted color for text */
+    text-align: center;
+    padding: 40px 20px;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-size: 3em;
+    color: #a3415e; /* Elegant deep rose color */
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+/* ---------------------------------- */
+/* CARD STYLES                   */
+/* ---------------------------------- */
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px; /* More space between the elements */
+    width: 100%;
+    max-width: 900px;
+}
+
+.card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); /* Soft, elevated shadow */
+    width: 45%;
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Add a subtle interactive touch */
+.card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #c99e69; /* Soft gold color */
+    margin-bottom: 25px;
+    font-weight: 400; /* Lighter weight for titles */
+    letter-spacing: 1px;
+}
+
+/* ---------------------------------- */
+/* TIMER TEXT STYLES             */
+/* ---------------------------------- */
+#anniversary-timer, #birthday-timer {
+    font-family: Arial, sans-serif; /* Use a clean, non-serif font for the numbers */
+    font-size: 3.2em;
+    font-weight: 700;
+    margin-top: 15px;
+    color: #a3415e; /* Deep rose color for the countdown numbers */
+    line-height: 1.2;
+}
+/* ---------------------------------- */
+/* DEDICATION FOOTER STYLES        */
+/* ---------------------------------- */
+.dedication {
+    /* Fixed positioning keeps it in the same place even if they scroll */
+    position: fixed;
+    bottom: 20px; /* 20 pixels from the bottom edge */
+    left: 20px;  /* 20 pixels from the left edge */
+    
+    font-size: 0.9em; /* Smaller, subtle text */
+    font-weight: 400;
+    color: #6d6168; /* A muted color so it doesn't distract from the countdown */
+    opacity: 0.8; /* Slightly transparent */
+    
+    /* Make sure it uses the elegant font */
+    font-family: 'Playfair Display', serif;
+}
+
+/* ---------------------------------- */
+/* ANIMATION 1: PULSE/GLOW EFFECT  */
+/* ---------------------------------- */
+
+/* 1. Define the animation */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.95; } /* Slight growth */
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 2. Apply the animation to the timer text */
+#anniversary-timer, #birthday-timer {
+    /* Apply the existing styles first (from previous step) */
+    /* ... (existing styles) ... */
+    
+    /* ADD these two lines: */
+    animation: pulse 3s infinite ease-in-out; /* 3 seconds duration, runs forever */
+}
+/* style.css */
+
+@keyframes celebration-shake {
+    0% { transform: translate(1px, 1px) rotate(0deg) scale(1.0); }
+    25% { transform: translate(-1px, -2px) rotate(-1deg) scale(1.05); }
+    50% { transform: translate(-3px, 0px) rotate(1deg) scale(1.0); }
+    75% { transform: translate(1px, 2px) rotate(0deg) scale(1.05); }
+    100% { transform: translate(1px, 1px) rotate(0deg) scale(1.0); }
+}
+
+.celebrate {
+    animation: celebration-shake 0.3s infinite; /* A fast, shaking celebration! */
+    color: #e91e63 !important; /* Make the color pop! */
+}
+/* ---------------------------------- */
+/* HINATA GIF STYLES              */
+/* ---------------------------------- */
+.hinata-gif {
+    /* Adjust size as needed, 80px is a good, non-intrusive size */
+    width: 80px; 
+    height: 80px;
+    border-radius: 50%; /* Make it round for an elegant look */
+    border: 3px solid #c99e69; /* Add a subtle gold border */
+    margin-bottom: 5px; /* Space between the image and the text */
+    display: block; /* Ensures it takes up its own line */
+    margin-left: 0; /* Align to the left of the fixed footer */
+    object-fit: cover; /* Ensures image fills the circle without distortion */
+}
+
+/* Update the main dedication container to allow for stacked elements */
+.dedication {
+    /* All styles from before remain: */
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    font-family: 'Playfair Display', serif;
+    
+    /* NEW STYLES for layout: */
+    display: flex; /* Use flexbox to organize the items */
+    flex-direction: column; /* Stack the items vertically */
+    align-items: flex-start; /* Align everything to the left */
+}
+
+/* Style the text element */
+.dedication-text {
+    font-size: 0.9em;
+    font-weight: 400;
+    color: #6d6168; 
+    opacity: 0.8;
+}

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haniya's Secret Birthday Portal</title>
+    <!-- Using Inter for a more modern, yet elegant feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* * --- GLOBAL BODY STYLES (Used Tailwind approach via custom CSS for elegance) --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #f7f3f0; /* Light text color for contrast */
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0; 
+            overflow-x: hidden;
+            
+            /* Default background: High-quality tulip photo for login screen */
+            background-image: url('https://images.pexels.com/photos/1572979/pexels-photo-1572979.jpeg?auto=compress&cs=tinysrgb&w=1000'); 
+            background-size: 120% 120%; 
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
+            /* Subtle zoom animation (Ken Burns effect) for the login screen */
+            animation: subtleZoom 30s infinite alternate ease-in-out; 
+            transition: background 1s ease-in-out; 
+        }
+
+        /* Keyframes for the slow zoom/pan effect (Used on the login screen) */
+        @keyframes subtleZoom {
+            0% {
+                background-size: 120% 120%; 
+                background-position: 50% 50%; 
+            }
+            100% {
+                background-size: 108% 108%; 
+                background-position: 55% 45%; 
+            }
+        }
+        
+        /* --- POST-LOGIN BACKGROUND (Tulip Garden Photo) --- */
+        .surprise-bg-active {
+            background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000');
+            background-size: cover;
+            background-position: center center;
+            animation: none !important;
+        }
+
+        /* Enhancing the login box and content for high contrast */
+        .login-box, #surprise-content {
+            /* Dark, semi-transparent background for readability */
+            background-color: rgba(30, 0, 15, 0.9); 
+            padding: 40px;
+            border-radius: 15px; 
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); 
+            z-index: 10;
+            backdrop-filter: blur(4px); 
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .login-box {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* General inputs/buttons */
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px; /* Slightly more rounded */
+            border: 1px solid #7c6a73;
+            font-family: 'Inter', sans-serif;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #1e000f;
+        }
+        
+        /* Custom button style for the main application */
+        button {
+            background-color: #a3415e; /* Rich Crimson */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.1s;
+            width: 100%; /* Ensure full width inside padding */
+            padding: 12px 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        button:hover:not(:disabled) {
+            background-color: #8c3651;
+            transform: translateY(-2px);
+        }
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        /* Style for the poem button */
+        #generate-poem-btn {
+            background-color: #c99e69; /* Lighter, contrasting gold color */
+            color: #1e000f;
+            font-size: 1.1em;
+        }
+        #generate-poem-btn:hover:not(:disabled) {
+            background-color: #b3885b;
+        }
+        #generate-poem-btn:disabled {
+            background-color: #999;
+            cursor: wait;
+        }
+
+        #error-message {
+            color: #ffccff; 
+            margin-top: 10px;
+            font-weight: 700;
+        }
+        
+        #surprise-content {
+            display: none; 
+            margin-top: 30px;
+            text-align: left;
+            color: #f7f3f0;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        /* Surprise Content Headings/Text */
+        #surprise-content h1, h2 {
+            font-family: 'Playfair Display', serif;
+            color: #ffccff; /* Light pink/purple */
+        }
+        
+        /* Responsive photo grid styling */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .photo-grid img {
+            width: 100%;
+            height: 200px; /* Fixed height for uniformity */
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- ROSE STYLING --- */
+        .rose-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 40px auto;
+            position: relative;
+        }
+        .rose-stem {
+            width: 12px;
+            height: 150px;
+            background-color: #38761D;
+            border-radius: 6px;
+            margin-bottom: -15px;
+            position: relative; 
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+        }
+        .rose-stem::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: -20px; 
+            width: 50px;
+            height: 100px;
+            background-color: #6AA84F; 
+            border-radius: 100% 0 100% 0 / 100% 0 100% 0;
+            transform: rotate(20deg);
+            box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .rose-head {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 20;
+            transform: rotateZ(-5deg) translateY(0);
+            transform-origin: bottom center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.5); 
+            border-radius: 50%; 
+        }
+        .rose-head:hover {
+            transform: rotateZ(0deg) translateY(-10px) scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.7);
+        }
+        .rose-head:active {
+            transform: rotateZ(-5deg) translateY(-2px) scale(0.98); 
+            transition: transform 0.1s ease-out; 
+        }
+        .petal-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(160deg, #E94057, #F2709C, #A3415E);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .petal-layer:nth-child(1) {
+            width: 150px; height: 150px;
+            border-radius: 70% 30% 70% 30% / 30% 70% 30% 70%;
+            transform: rotate(40deg); opacity: 0.8; z-index: 3;
+        }
+        .petal-layer:nth-child(2) {
+            width: 120px; height: 120px;
+            border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+            transform: rotate(-10deg); opacity: 0.9; z-index: 4;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        .petal-layer:nth-child(3) {
+            width: 80px; height: 80px;
+            border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+            background: linear-gradient(45deg, #FFC0CB, #E94057);
+            transform: rotate(25deg) translateY(-10px); z-index: 5;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+        }
+        .quality-wrapper {
+            position: absolute; z-index: 10;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            pointer-events: none; 
+        }
+        #quality-title {
+            font-size: 1.1em; font-weight: 400; color: #ffccff;
+        }
+        #quality-display {
+            font-size: 1.8em; font-weight: 700; color: white; 
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            margin-top: 10px;
+            animation: fadeInOut 0.5s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.7); }
+            50% { opacity: 1; transform: scale(1.1); } 
+            100% { opacity: 1; transform: scale(1); }
+        }
+        /* --- END ROSE STYLING --- */
+
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <div class="login-box" id="login-section">
+            <h1 style="font-family: 'Playfair Display', serif;">Welcome, Haniya Rida!</h1>
+            <p>Please enter the secret code to access your surprise.</p>
+            
+            <input type="text" id="username" placeholder="Your Name (e.g., Haniya)" required>
+            <input type="password" id="password" placeholder="The Secret Code (e.g., date)" required>
+            <button onclick="attemptLogin()">Unlock My Surprise</button>
+            
+            <p id="error-message"></p>
+        </div>
+
+        <div id="surprise-content">
+            <h1 style="color: #ffccff; font-family: 'Playfair Display', serif;">My Dearest Haniya, Happy Birthday! 🎉</h1>
+            <p style="font-size: 1.2em; line-height: 1.6;">
+                I coded this just for you, my love. Every minute we spend together is the greatest gift. 
+                I wish you the happiest birthday filled with joy and laughter. I love you more than words can say.
+            </p>
+
+            <!-- ROSE FLOWER INTERACTION SECTION -->
+            <div class="rose-container">
+                <div class="rose-head" onclick="revealQuality()">
+                    <div class="petal-layer"></div>
+                    <div class="petal-layer"></div>
+                    <div class="petal-layer"></div>
+                    
+                    <div class="quality-wrapper">
+                        <span id="quality-title">Tap the rose petal to reveal...</span>
+                        <span id="quality-display">Your Magic!</span>
+                    </div>
+                </div>
+                <div class="rose-stem"></div>
+            </div>
+            <!-- END ROSE FLOWER SECTION -->
+            
+            <p style="font-size: 1.2em; line-height: 1.6; margin-top: 30px;">
+                Here are my favorite pics from this year:
+            </p>
+
+            <div class="photo-grid">
+                <!-- Using aesthetic placeholders as the original image URLs are likely local or non-public -->
+                <img src="" alt="Memory 1" onerror="this.onerror=null;this.src='https://placehold.co/150x200/A3415E/ffffff?text=Our%20Adventures'">
+                <img src="" alt="Memory 2" onerror="this.onerror=null;this.src='https://placehold.co/150x200/C99E69/ffffff?text=Your%20Smile'">
+                <img src="" alt="Memory 3" onerror="this.onerror=null;this.src='https://placehold.co/150x200/F2709C/1e000f?text=Sweet%20Memories'">
+                <img src="" alt="Memory 4" onerror="this.onerror=null;this.src='https://placehold.co/150x200/E94057/ffffff?text=You%20&%20Me'">
+            </div>
+            
+            <!-- POEM GENERATOR SECTION (Restored to local cycling) -->
+            <div style="margin-top: 40px; border-top: 2px dashed #a3415e; padding-top: 20px;">
+                <h2 style="color: #ffccff; font-size: 1.4em; margin-bottom: 20px;">A Little Extra Magic, Just for You</h2>
+                
+                <button id="generate-poem-btn" onclick="generateBirthdayPoem()">
+                    ✨ Generate Poem ✨
+                </button>
+                <div id="poem-output" style="margin-top: 20px; padding: 20px; background-color: rgba(0, 0, 0, 0.4); border-radius: 10px; color: #ffccff; text-align: center; white-space: pre-wrap; font-style: italic; line-height: 1.5;">
+                    Click the button above to read a heartfelt poem written just for you!
+                </div>
+            </div>
+
+            <p class="signature" style="font-family: 'Playfair Display', serif;">
+                All my love,
+                <br>
+                Aayan 💖
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 🚨 CRITICAL: SET YOUR USERNAME AND PASSWORD HERE 🚨
+        const CORRECT_USERNAME = "haniyarida"; 
+        const CORRECT_PASSWORD = "05072021"; 
+
+        // --- LOCAL POEM DATA (UPDATED to hold all 5 original poems) ---
+        const BIRTHDAY_POEMS = [
+            // Poem 1
+            "My dearest Haniya, on this day so bright,\nWith every year, you fill my world with light.\nYour love's the anchor, keeping my heart warm and true,\nMay all your deepest wishes beautifully come true.",
+            
+            // Poem 2
+            "My dearest Haniya, on this special day,\nYou light my world in every lovely way.\nWith every moment, our shared journey's clear,\nHappy birthday, my love, forever near.",
+            
+            // Poem 3
+            "My dearest Haniya, on your special day,\nYou light my world in every lovely way.\nEach moment shared, a treasure I embrace,\nForever grateful for your love and grace.",
+            
+            // Poem 4
+            "My dearest Haniya, on your special day,\nYou light up my world in every sweet way.\nWith you by my side, life's a beautiful art,\nHappy birthday, my love, you own all of my heart.",
+            
+            // Poem 5
+            "My sweet Haniya, as your birthday gleams,\nYou fill my world with the most beautiful dreams.\nEach shared moment, a treasure so true,\nMy path is brighter, simply with you.\nHappy birthday, my love, forever I'll adore you."
+        ];
+        // The index will now cycle through all five elements.
+        let currentPoemIndex = 0;
+
+        // --- APPLICATION LOGIC ---
+
+        function attemptLogin() {
+            const usernameInput = document.getElementById('username').value.toLowerCase().trim();
+            const passwordInput = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            const loginSection = document.getElementById('login-section');
+            const surpriseContent = document.getElementById('surprise-content');
+
+            if (usernameInput === CORRECT_USERNAME && passwordInput === CORRECT_PASSWORD) {
+                // SUCCESS: Reveal the content, adjust layout
+                loginSection.style.display = 'none';
+                surpriseContent.style.display = 'block';
+                document.body.style.justifyContent = 'flex-start'; 
+                
+                document.body.classList.add('surprise-bg-active');
+                
+                // Show the initial poem right away
+                generateBirthdayPoem();
+                
+            } else {
+                // FAILURE: Show error message
+                errorMessage.textContent = 'Access Denied. Check your name and secret code!';
+            }
+        }
+
+        function generateBirthdayPoem() {
+            const outputDiv = document.getElementById('poem-output');
+            const button = document.getElementById('generate-poem-btn');
+
+            // 1. Get the current poem
+            const poem = BIRTHDAY_POEMS[currentPoemIndex];
+
+            // 2. Update the text (replace \n with <br> for HTML rendering)
+            outputDiv.innerHTML = poem.trim().replace(/\n/g, '<br>');
+            
+            // 3. Cycle the index (uses modulo to wrap around to 0 after the last poem)
+            currentPoemIndex = (currentPoemIndex + 1) % BIRTHDAY_POEMS.length;
+            
+            // 4. Update button text
+            button.textContent = '✨ Read the Next Poem ✨';
+        }
+
+
+        // --- HANIYA'S QUALITIES LOGIC (Unchanged) ---
+        const HANIYA_QUALITIES = [
+            "Incredible Kindness 💖",
+            "Sparkling Intelligence ✨",
+            "Unwavering Loyalty 🔒",
+            "Beautiful Resilience 💪",
+            "Contagious Laughter 😂",
+            "Natural Grace 🌟",
+            "Creative Spirit 🎨",
+            "My Greatest Love ❤️"
+        ];
+        let currentQualityIndex = 0;
+
+        function revealQuality() {
+            const qualityDisplay = document.getElementById('quality-display');
+            const qualityTitle = document.getElementById('quality-title');
+            const roseHead = document.querySelector('.rose-head');
+
+            // 1. Get the current quality
+            const quality = HANIYA_QUALITIES[currentQualityIndex];
+
+            // 2. Update the text with a quick animation reset
+            qualityDisplay.style.animation = 'none';
+            void qualityDisplay.offsetWidth; 
+            
+            qualityTitle.textContent = "Haniya is:";
+            qualityDisplay.textContent = quality;
+            qualityDisplay.style.animation = 'fadeInOut 0.5s ease-in-out';
+            
+            // 3. Animate the rose head on click (brief pop effect)
+            roseHead.style.transition = 'none';
+            roseHead.style.transform = 'scale(1.1) rotateZ(-5deg)';
+            setTimeout(() => {
+                roseHead.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                roseHead.style.transform = 'translateY(0) rotateZ(-5deg)'; 
+            }, 50);
+
+            // 4. Cycle the index
+            currentQualityIndex = (currentQualityIndex + 1) % HANIYA_QUALITIES.length;
+        }
+
+        // --- Initial Setup ---
+        window.onload = function() {
+            // Set initial placeholder message for the poem section
+            document.getElementById('poem-output').textContent = "Click the button above to read a heartfelt poem written just for you!";
+        };
+    </script>
+</body>
+</html>
+
+
